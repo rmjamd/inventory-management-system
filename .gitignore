@@ -1,0 +1,10 @@
+# Default ignored files
+/shelf/
+/.idea/workspace.xml
+*.pb
+compiler.xml
+*.lst
+*.xml
+!.pom.xml
+/target/maven-status/maven-compiler-plugin/*/*/*.lst
+*.idea
