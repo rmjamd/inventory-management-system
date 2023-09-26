@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/categories")
+@RequestMapping("/api/category")
 public class CategoryController {
 	private final CategoryService categoryService;
 
@@ -69,7 +69,7 @@ public class CategoryController {
 	}
 
 
-	@GetMapping("/category/{categoryName}")
+	@GetMapping("/name/{categoryName}")
 	public ResponseEntity <Category> getCategoryByName (
 			@PathVariable
 			String categoryName) {

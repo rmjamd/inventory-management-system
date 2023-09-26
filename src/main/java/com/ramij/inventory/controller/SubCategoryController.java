@@ -71,7 +71,7 @@ public class SubCategoryController {
 	}
 
 
-	@GetMapping("/subCategory/{subCategoryName}")
+	@GetMapping("/name/{subCategoryName}")
 	public ResponseEntity <SubCategory> getSubCategoryByName (
 			@PathVariable
 			String subCategoryName) {
