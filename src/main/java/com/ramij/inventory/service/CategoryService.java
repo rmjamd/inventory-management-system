@@ -1,6 +1,6 @@
 package com.ramij.inventory.service;
 
-import com.ramij.inventory.exceptions.ResourceExistsExceptions;
+import com.ramij.inventory.exceptions.ResourceExistsException;
 import com.ramij.inventory.model.Category;
 import com.ramij.inventory.repository.CategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -21,7 +21,7 @@ public class CategoryService {
 
 	public Category createCategory(Category category) {
 		if (categoryRepository.findByCategoryName(category.getCategoryName()) != null) {
-			throw new ResourceExistsExceptions("Category name must be unique");
+			throw new ResourceExistsException("Category name must be unique");
 		}
 		return categoryRepository.save(category);
 	}
@@ -44,7 +44,7 @@ public class CategoryService {
 		// Check if the updated category name is unique
 		Category existingCategoryWithSameName = categoryRepository.findByCategoryName(updatedCategory.getCategoryName());
 		if (existingCategoryWithSameName != null && !existingCategoryWithSameName.getCategoryId().equals(categoryId)) {
-			throw new ResourceExistsExceptions("Category name must be unique");
+			throw new ResourceExistsException("Category name must be unique");
 		}
 		updatedCategory.setCategoryId(categoryId);
 		return categoryRepository.save(updatedCategory);

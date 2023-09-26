@@ -1,19 +1,20 @@
 package com.ramij.inventory.model;
 
 import jakarta.persistence.*;
-
-import java.util.List;
+import lombok.Data;
 
 @Entity
+@Data
 public class SubCategory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long subcategoryId;
 
-	private String subcategoryName;
+	private String subCategoryName;
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "categoryId")
+
 	private Category category;
 
 //	@OneToMany(mappedBy = "subCategory", cascade = CascadeType.ALL)
