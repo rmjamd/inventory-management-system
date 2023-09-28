@@ -8,4 +8,4 @@ compiler.xml
 !.pom.xml
 /target/maven-status/maven-compiler-plugin/*/*/*.lst
 *.idea
-/target/
+target
