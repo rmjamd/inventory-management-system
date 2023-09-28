@@ -14,8 +14,8 @@ public class SubCategory {
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "categoryId")
-
 	private Category category;
+	private String   description;
 
 //	@OneToMany(mappedBy = "subCategory", cascade = CascadeType.ALL)
 //	private List <Design> designs;

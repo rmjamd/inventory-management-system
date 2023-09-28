@@ -17,9 +17,12 @@ public class ExceptionsHandlers {
 	}
 
 	@ExceptionHandler(EntityNotFoundException.class)
-	public ResponseEntity <Response> throwEntityNotFoundExceptions (EntityNotFoundException ex) {
+	public ResponseEntity <Response> throwEntityNotFoundException (EntityNotFoundException ex) {
 		return new ResponseEntity <>(new Response().setMessage(ex.getMessage()).setStatus("failed"), HttpStatus.BAD_REQUEST);
 	}
-
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity <Response> throwIllegalArgumentException (IllegalArgumentException ex) {
+		return new ResponseEntity <>(new Response().setMessage(ex.getMessage()).setStatus("failed"), HttpStatus.BAD_REQUEST);
+	}
 
 }

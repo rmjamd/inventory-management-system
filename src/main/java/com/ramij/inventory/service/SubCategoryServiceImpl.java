@@ -1,6 +1,7 @@
 package com.ramij.inventory.service;
 
 import com.ramij.inventory.exceptions.ResourceExistsException;
+import com.ramij.inventory.model.Category;
 import com.ramij.inventory.model.PageableItems;
 import com.ramij.inventory.model.SubCategory;
 import com.ramij.inventory.repository.SubCategoryRepository;
@@ -16,17 +17,24 @@ import java.util.List;
 @Service
 public class SubCategoryServiceImpl implements SubCategoryService {
 	private final SubCategoryRepository subCategoryRepository;
+	private final CategoryService categoryService;
 
 
 	@Autowired
-	public SubCategoryServiceImpl (SubCategoryRepository subCategoryRepository) {
+	public SubCategoryServiceImpl (SubCategoryRepository subCategoryRepository, CategoryService categoryService) {
 		this.subCategoryRepository = subCategoryRepository;
+		this.categoryService       = categoryService;
 	}
 
 
 	@Override
 	@Transactional
 	public SubCategory createSubCategory (SubCategory subCategory) {
+		if (subCategory.getCategory() == null || subCategory.getCategory().getCategoryId() == null) {
+			throw new IllegalArgumentException("Category is mandatory for SubCategory");
+		}
+		Category category=categoryService.getCategoryById(subCategory.getCategory().getCategoryId());
+		subCategory.setCategory(category);
 		SubCategory existingSubCategory = subCategoryRepository.findBySubCategoryName(subCategory.getSubCategoryName());
 
 		if (existingSubCategory != null) {

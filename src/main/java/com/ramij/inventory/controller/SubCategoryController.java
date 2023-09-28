@@ -22,7 +22,7 @@ public class SubCategoryController {
 
 	@PostMapping
 	public ResponseEntity <SubCategory> createSubCategory (
-			@RequestParam
+			@RequestBody
 			SubCategory subCategory) {
 		SubCategory craetedSubCategory = subCategoryService.createSubCategory(subCategory);
 		return new ResponseEntity <>(craetedSubCategory, HttpStatus.CREATED);
@@ -71,9 +71,9 @@ public class SubCategoryController {
 	}
 
 
-	@GetMapping("/name/{subCategoryName}")
+	@GetMapping("/name/{subcategoryName}")
 	public ResponseEntity <SubCategory> getSubCategoryByName (
-			@PathVariable
+			@PathVariable(name="subcategoryName")
 			String subCategoryName) {
 		SubCategory subCategory = subCategoryService.getSubCategoryByName(subCategoryName);
 		return new ResponseEntity <>(subCategory, HttpStatus.OK);
