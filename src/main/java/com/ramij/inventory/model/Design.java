@@ -1,8 +1,10 @@
 package com.ramij.inventory.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
+@Data
 public class Design {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,9 +14,9 @@ public class Design {
 	private String description;
 	private String creatorName;
 
-//	@ManyToOne
-//	@JoinColumn(name = "subcategory_id")
-//	private SubCategory subcategory;
+	@ManyToOne
+	@JoinColumn(name = "subCategoryId")
+	private SubCategory subCategory;
 
 //	@OneToMany(mappedBy = "design", cascade = CascadeType.ALL)
 //	private List<Product> products;
