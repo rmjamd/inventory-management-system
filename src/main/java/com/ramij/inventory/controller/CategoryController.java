@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/category")
+@RequestMapping("/api")
 public class CategoryController {
 	private final CategoryService categoryService;
 
@@ -20,7 +20,7 @@ public class CategoryController {
 	}
 
 
-	@PostMapping
+	@PostMapping("/category")
 	public ResponseEntity <Category> createCategory (
 			@RequestBody
 			Category category) {
@@ -29,7 +29,7 @@ public class CategoryController {
 	}
 
 
-	@GetMapping
+	@GetMapping("/categories")
 	public ResponseEntity <Page <Category>> getAllCategories (
 			@RequestParam(defaultValue = "0")
 			int page,
@@ -40,7 +40,7 @@ public class CategoryController {
 	}
 
 
-	@GetMapping("/{categoryId}")
+	@GetMapping("/category{categoryId}")
 	public ResponseEntity <Category> getCategoryById (
 			@PathVariable
 			Long categoryId) {
@@ -49,7 +49,7 @@ public class CategoryController {
 	}
 
 
-	@PutMapping("/{categoryId}")
+	@PutMapping("/category{categoryId}")
 	public ResponseEntity <Category> updateCategory (
 			@PathVariable
 			Long categoryId,
@@ -60,7 +60,7 @@ public class CategoryController {
 	}
 
 
-	@DeleteMapping("/{categoryId}")
+	@DeleteMapping("/category{categoryId}")
 	public ResponseEntity <Void> deleteCategory (
 			@PathVariable
 			Long categoryId) {
@@ -69,9 +69,9 @@ public class CategoryController {
 	}
 
 
-	@GetMapping("/name/{categoryName}")
+	@GetMapping("/category")
 	public ResponseEntity <Category> getCategoryByName (
-			@PathVariable
+			@RequestParam(name = "name")
 			String categoryName) {
 		Category category = categoryService.getCategoryByName(categoryName);
 		if (category != null) {

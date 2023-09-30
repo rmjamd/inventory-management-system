@@ -4,15 +4,17 @@ import com.ramij.inventory.dto.request.DesignRequest;
 import com.ramij.inventory.dto.response.DesignResponse;
 import com.ramij.inventory.exceptions.ResourceException;
 import com.ramij.inventory.model.Design;
+import com.ramij.inventory.model.PageableItems;
 import com.ramij.inventory.repository.DesignRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -28,24 +30,18 @@ public class DesignService {
 	}
 
 
-	public DesignResponse createDesign (DesignRequest request) {
+	public DesignResponse createDesign (DesignRequest request, String subCategoryName) {
 		try {
 
 			Design design = new Design();
 			design.setDesignName(request.getDesignName());
 			design.setDescription(request.getDescription());
 			design.setCreatorName(request.getCreatorName());
-			design.setSubCategory(subCategoryService.getSubCategoryByName(request.getSubCategoryName()));
+			design.setSubCategory(subCategoryService.getSubCategoryByName(subCategoryName));
 			design = designRepository.save(design);
 
-			DesignResponse response = new DesignResponse();
-			response.setDesignId(design.getDesignId());
-			response.setDesignName(design.getDesignName());
-			response.setDescription(design.getDescription());
-			response.setCreatorName(design.getCreatorName());
-
+			DesignResponse response = mapDesignToResponse(design);
 			log.info("Created new design with ID: " + design.getDesignId());
-
 			return response;
 		} catch (Exception e) {
 			log.error("Error creating design", e);
@@ -54,10 +50,11 @@ public class DesignService {
 	}
 
 
-	public List <DesignResponse> getAllDesigns () {
+	public PageableItems <DesignResponse> getAllDesigns (int pageNo, int size) {
 		try {
-			List <Design> designs = designRepository.findAll();
-			return mapDesignsToResponses(designs);
+			Page <Design> pages   = designRepository.findAll(PageRequest.of(pageNo, size));
+			List <Design> designs = pages.getContent();
+			return new PageableItems <>(mapDesignsToResponses(designs), pages.getTotalPages());
 		} catch (Exception e) {
 			log.error("Error in fetching all design", e);
 			throw new ResourceException("Error in fetching all design: " + e.getMessage());
@@ -79,7 +76,7 @@ public class DesignService {
 	public DesignResponse updateDesign (Long id, DesignRequest request) {
 		try {
 			Optional <Design> designOptional = designRepository.findById(id);
-			if (!designOptional.isPresent()) {
+			if (designOptional.isEmpty()) {
 				throw new EntityNotFoundException("Design not found with ID: " + id);
 			}
 
@@ -87,7 +84,6 @@ public class DesignService {
 			design.setDesignName(request.getDesignName());
 			design.setDescription(request.getDescription());
 			design.setCreatorName(request.getCreatorName());
-
 			design = designRepository.save(design);
 
 			log.info("Updated design with ID: " + design.getDesignId());
@@ -125,7 +121,7 @@ public class DesignService {
 	private List <DesignResponse> mapDesignsToResponses (List <Design> designs) {
 		return designs.stream()
 					  .map(this::mapDesignToResponse)
-					  .collect(Collectors.toList());
+					  .toList();
 	}
 
 

@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/subcategory")
+@RequestMapping("/api")
 public class SubCategoryController {
 	final SubCategoryService subCategoryService;
 
@@ -20,7 +20,7 @@ public class SubCategoryController {
 	}
 
 
-	@PostMapping
+	@PostMapping("/subcategory")
 	public ResponseEntity <SubCategory> createSubCategory (
 			@RequestBody
 			SubCategory subCategory) {
@@ -29,7 +29,7 @@ public class SubCategoryController {
 	}
 
 
-	@GetMapping
+	@GetMapping("/subcategories")
 	public ResponseEntity <PageableItems <SubCategory>> getAllSubcategory (
 			@RequestParam(name = "page",
 						  defaultValue = "0")
@@ -41,7 +41,7 @@ public class SubCategoryController {
 	}
 
 
-	@GetMapping("/{subCategoryId}")
+	@GetMapping("/subcategory/{subCategoryId}")
 	public ResponseEntity <SubCategory> getSubCategory (
 			@PathVariable
 			Long subCategoryId) {
@@ -51,7 +51,7 @@ public class SubCategoryController {
 	}
 
 
-	@PutMapping("/{subCategoryId}")
+	@PutMapping("/subcategory/{subCategoryId}")
 	public ResponseEntity <SubCategory> updateSubCategory (
 			@PathVariable
 			Long subCategoryId,
@@ -62,7 +62,7 @@ public class SubCategoryController {
 	}
 
 
-	@DeleteMapping("/{subCategoryId}")
+	@DeleteMapping("/subcategory/{subCategoryId}")
 	public ResponseEntity <Void> deleteSubCategory (
 			@PathVariable
 			Long subCategoryId) {
@@ -71,9 +71,9 @@ public class SubCategoryController {
 	}
 
 
-	@GetMapping("/name/{subcategoryName}")
+	@GetMapping("/subcategory")
 	public ResponseEntity <SubCategory> getSubCategoryByName (
-			@PathVariable(name="subcategoryName")
+			@RequestParam(name="name")
 			String subCategoryName) {
 		SubCategory subCategory = subCategoryService.getSubCategoryByName(subCategoryName);
 		return new ResponseEntity <>(subCategory, HttpStatus.OK);

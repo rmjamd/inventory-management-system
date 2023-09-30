@@ -1,5 +1,6 @@
 package com.ramij.inventory.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
@@ -8,7 +9,7 @@ public class DesignRequest {
 	private String designName;
 	private String description;
 	private String creatorName;
-    private String subCategoryId;
-    private String subCategoryName;
+//	@NotBlank(message = "SubCategoryName name is required")
+//    private String subCategoryName;
 	// Constructors, getters, and setters
 }
