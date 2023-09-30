@@ -9,12 +9,12 @@ public class Design {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long designId;
-
+	@Column(unique = true)
 	private String designName;
 	private String description;
 	private String creatorName;
 
-	@ManyToOne
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "subCategoryId")
 	private SubCategory subCategory;
 

@@ -11,7 +11,7 @@ public class SubCategory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long subCategoryId;
-
+	@Column(unique = true)
 	private String subCategoryName;
 
 	@ManyToOne(optional = false)
@@ -20,5 +20,6 @@ public class SubCategory {
 	private String   description;
 
 	@OneToMany(mappedBy = "subCategory", cascade = CascadeType.ALL)
-	private List <Design> designs;
+	private List<Design> designs;
+
 }

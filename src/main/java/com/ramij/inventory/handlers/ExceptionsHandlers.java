@@ -34,5 +34,9 @@ public class ExceptionsHandlers {
 	public ResponseEntity <Response> throwResourceException (ResourceException ex) {
 		return new ResponseEntity <>(new Response().setMessage(ex.getMessage()).setStatus("failed"), HttpStatus.BAD_REQUEST);
 	}
+	@ExceptionHandler({RuntimeException.class})
+	public ResponseEntity <Response> throwResourceException (RuntimeException ex) {
+		return new ResponseEntity <>(new Response().setMessage(ex.getMessage()).setStatus("failed"), HttpStatus.BAD_REQUEST);
+	}
 
 }

@@ -45,7 +45,7 @@ public class DesignService {
 			return response;
 		} catch (Exception e) {
 			log.error("Error creating design", e);
-			throw new ResourceException("Failed to create design: " + e.getMessage());
+			throw new ResourceException("Failed to create design");
 		}
 	}
 
@@ -57,7 +57,7 @@ public class DesignService {
 			return new PageableItems <>(mapDesignsToResponses(designs), pages.getTotalPages());
 		} catch (Exception e) {
 			log.error("Error in fetching all design", e);
-			throw new ResourceException("Error in fetching all design: " + e.getMessage());
+			throw new ResourceException("Error in fetching all design");
 		}
 	}
 
@@ -68,7 +68,7 @@ public class DesignService {
 			return designOptional.map(this::mapDesignToResponse);
 		} catch (Exception e) {
 			log.error("Error in fetching a design by id", e);
-			throw new ResourceException("Error in fetching a design by id: " + e.getMessage());
+			throw new ResourceException("Error in fetching a design by id: "+id);
 		}
 	}
 
@@ -91,7 +91,7 @@ public class DesignService {
 			return mapDesignToResponse(design);
 		} catch (Exception e) {
 			log.error("Error updating design", e);
-			throw new ResourceException("Failed to update design: " + e.getMessage());
+			throw new ResourceException("Failed to update design");
 		}
 	}
 
@@ -102,7 +102,7 @@ public class DesignService {
 			log.info("Deleted design with ID: " + id);
 		} catch (Exception e) {
 			log.error("Error deleting design", e);
-			throw new ResourceException("Failed to delete design: " + e.getMessage());
+			throw new ResourceException("Failed to delete design");
 		}
 	}
 
@@ -113,7 +113,7 @@ public class DesignService {
 			return designOptional.map(this::mapDesignToResponse);
 		} catch (Exception e) {
 			log.error("Error in fetching a design by Name", e);
-			throw new ResourceException("Error in fetching a design by Name: " + e.getMessage());
+			throw new ResourceException("Error in fetching a design by Name");
 		}
 	}
 
