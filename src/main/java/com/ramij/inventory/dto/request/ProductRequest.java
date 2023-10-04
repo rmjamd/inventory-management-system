@@ -1,16 +1,18 @@
 package com.ramij.inventory.dto.request;
 
 import com.ramij.inventory.model.Product;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Data
 public class ProductRequest {
 	private int          quantity;
+	@NotNull
 	private BigDecimal   currentCost;
-	private LocalDate    creationDate;
-	private Long         designId;
+	@NotNull
+	private String       designName;
+	@NotNull
 	private Product.Size size;
 }

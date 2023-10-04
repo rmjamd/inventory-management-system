@@ -27,8 +27,6 @@ public class Product {
 	@NotNull
 	Design design;
 	@NotNull
-	Gender gender;
-	@NotNull
 	private Size size;
 
 	@Data
