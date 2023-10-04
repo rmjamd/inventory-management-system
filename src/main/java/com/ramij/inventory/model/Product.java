@@ -3,20 +3,20 @@ package com.ramij.inventory.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
+@Data
 public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@NotNull
-	Long   productId;
-	@Column(name = "des")
-	String description;
+	Long productId;
 	@Positive
-	int    quantity;
+	int  quantity;
 	@Column(name = "cost")
 	@NotNull(message = "Current cost cannot be null")
 	private BigDecimal currentCost;
@@ -28,4 +28,21 @@ public class Product {
 	Design design;
 	@NotNull
 	Gender gender;
+	@NotNull
+	private Size size;
+
+	@Data
+	public static class Size {
+		private SizeName sizeName;
+		private double   height;
+		private double   width;
+
+		public enum SizeName {
+			M, X, L, XXL
+		}
+
+		// Constructors, getters, and setters
+	}
+
+
 }

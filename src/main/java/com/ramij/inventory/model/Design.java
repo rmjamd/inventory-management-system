@@ -24,7 +24,4 @@ public class Design {
 			   cascade = CascadeType.ALL)
 	private List <Product> products;
 
-	@OneToOne
-	@JoinColumn(name = "size_id")
-	private Size size;
 }
