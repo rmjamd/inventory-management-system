@@ -10,7 +10,7 @@ import java.util.List;
 public class SubCategory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long subCategoryId;
+	private Long   subCategoryId;
 	@Column(unique = true)
 	private String subCategoryName;
 
@@ -19,7 +19,13 @@ public class SubCategory {
 	private Category category;
 	private String   description;
 
-	@OneToMany(mappedBy = "subCategory", cascade = CascadeType.ALL)
-	private List<Design> designs;
+	@OneToMany(mappedBy = "subCategory",
+			   cascade = CascadeType.ALL)
+	private List <Design> designs;
 
+	Gender gender = Gender.UNISEX;
+
+	public enum Gender {
+		MALE, FEMALE, KIDS, UNISEX, BOY_KIDS, GIRL_KIDS
+	}
 }
