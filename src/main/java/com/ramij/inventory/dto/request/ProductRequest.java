@@ -8,9 +8,9 @@ import java.math.BigDecimal;
 
 @Data
 public class ProductRequest {
-	private int          quantity;
+	private int        quantity;
 	@NotNull
-	private BigDecimal   currentCost;
+	private BigDecimal currentCost;
 	@NotNull
 	private String       designName;
 	@NotNull

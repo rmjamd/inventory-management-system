@@ -29,7 +29,9 @@ public class Product {
 	@NotNull
 	private Size size;
 
+
 	@Data
+	@Embeddable
 	public static class Size {
 		private SizeName sizeName;
 		private double   height;
@@ -41,6 +43,4 @@ public class Product {
 
 		// Constructors, getters, and setters
 	}
-
-
 }
