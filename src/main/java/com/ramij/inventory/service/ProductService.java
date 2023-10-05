@@ -5,7 +5,7 @@ import com.ramij.inventory.dto.response.ProductResponse;
 import com.ramij.inventory.exceptions.ResourceException;
 import com.ramij.inventory.model.Design;
 import com.ramij.inventory.model.Product;
-import com.ramij.inventory.repository.DesignService;
+import com.ramij.inventory.repository.DesignRepository;
 import com.ramij.inventory.repository.ProductRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +22,10 @@ import java.util.stream.Collectors;
 public class ProductService {
 
 	private final ProductRepository productRepository;
-	private final DesignService     designService;
+	private final DesignRepository  designService;
 
 	@Autowired
-	public ProductService(ProductRepository productRepository, DesignService designService) {
+	public ProductService(ProductRepository productRepository, DesignRepository designService) {
 		this.productRepository = productRepository;
 		this.designService     = designService;
 	}

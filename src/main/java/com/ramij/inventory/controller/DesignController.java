@@ -33,11 +33,13 @@ public class DesignController {
 			String subCategoryName,
 			@RequestBody
 			DesignRequest request) {
+		log.info("Creating design for subCategoryName: {}", subCategoryName);
 
 		// Service logic to create design
-		DesignResponse response = designService.createDesign(request,subCategoryName);
-		return ResponseEntity.status(HttpStatus.CREATED).body(response);
+		DesignResponse response = designService.createDesign(request, subCategoryName);
 
+		log.info("Design created successfully for subCategoryName: {}", subCategoryName);
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
 
@@ -49,6 +51,7 @@ public class DesignController {
 			@RequestParam(name = "size",
 						  defaultValue = "5")
 			int size) {
+		log.info("Fetching all designs with pageNo: {} and size: {}", pageNo, size);
 		return designService.getAllDesigns(pageNo, size);
 	}
 
@@ -57,6 +60,7 @@ public class DesignController {
 	public ResponseEntity <DesignResponse> getDesignById (
 			@PathVariable
 			Long id) {
+		log.info("Fetching design by ID: {}", id);
 		Optional <DesignResponse> designOptional = designService.getDesignById(id);
 		return designOptional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
 	}
@@ -68,8 +72,11 @@ public class DesignController {
 			Long id,
 			@RequestBody
 			DesignRequest request) {
+		log.info("Updating design with ID: {}", id);
 
 		DesignResponse response = designService.updateDesign(id, request);
+
+		log.info("Design with ID {} updated successfully", id);
 		return ResponseEntity.ok(response);
 	}
 
@@ -78,7 +85,9 @@ public class DesignController {
 	public ResponseEntity <Void> deleteDesign (
 			@PathVariable
 			Long id) {
+		log.info("Deleting design with ID: {}", id);
 		designService.deleteDesign(id);
+		log.info("Design with ID {} deleted successfully", id);
 		return ResponseEntity.noContent().build();
 	}
 
@@ -87,8 +96,8 @@ public class DesignController {
 	public ResponseEntity <DesignResponse> getDesignByName (
 			@PathVariable
 			String name) {
+		log.info("Fetching design by Name: {}", name);
 		Optional <DesignResponse> designOptional = designService.getDesignByName(name);
 		return designOptional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
 	}
 }
-

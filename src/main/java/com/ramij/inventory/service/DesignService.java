@@ -5,6 +5,7 @@ import com.ramij.inventory.dto.response.DesignResponse;
 import com.ramij.inventory.exceptions.ResourceException;
 import com.ramij.inventory.model.Design;
 import com.ramij.inventory.model.PageableItems;
+import com.ramij.inventory.repository.DesignRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,12 @@ import java.util.Optional;
 @Service
 @Log4j2
 public class DesignService {
-	private final com.ramij.inventory.repository.DesignService designService;
-	private final SubCategoryService                           subCategoryService;
+	private final DesignRepository   designService;
+	private final SubCategoryService subCategoryService;
 
 
 	@Autowired
-	public DesignService (com.ramij.inventory.repository.DesignService designService, SubCategoryService subCategoryService) {
+	public DesignService (DesignRepository designService, SubCategoryService subCategoryService) {
 		this.designService      = designService;
 		this.subCategoryService = subCategoryService;
 	}
