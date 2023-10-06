@@ -1,10 +1,10 @@
 package com.ramij.inventory.controller;
 
 import com.ramij.inventory.model.Category;
+import com.ramij.inventory.model.PageableItems;
 import com.ramij.inventory.service.CategoryService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,13 +35,13 @@ public class CategoryController {
 
 
 	@GetMapping("/categories")
-	public ResponseEntity <Page <Category>> getAllCategories (
+	public ResponseEntity <PageableItems <Category>> getAllCategories (
 			@RequestParam(defaultValue = "0")
 			int page,
 			@RequestParam(defaultValue = "5")
 			int size) {
 		log.info("Getting all categories with page: {}, size: {}", page, size);
-		Page <Category> categories = categoryService.getAllCategories(page, size);
+		PageableItems <Category> categories = categoryService.getAllCategories(page, size);
 		return new ResponseEntity <>(categories, HttpStatus.OK);
 	}
 

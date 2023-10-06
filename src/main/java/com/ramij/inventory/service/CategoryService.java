@@ -3,6 +3,7 @@ package com.ramij.inventory.service;
 import com.ramij.inventory.exceptions.ResourceException;
 import com.ramij.inventory.exceptions.ResourceExistsException;
 import com.ramij.inventory.model.Category;
+import com.ramij.inventory.model.PageableItems;
 import com.ramij.inventory.repository.CategoryRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +40,13 @@ public class CategoryService {
 	}
 
 
-	public Page <Category> getAllCategories (int pageNo, int size) {
+	public PageableItems <Category> getAllCategories (int pageNo, int size) {
 		log.info("Getting all categories with page: {}, size: {}", pageNo, size);
 
 		try {
-			Pageable pageable = PageRequest.of(pageNo, size);
-			return categoryRepository.findAll(pageable);
+			Pageable        pageable = PageRequest.of(pageNo, size);
+			Page <Category> pages    = categoryRepository.findAll(pageable);
+			return new PageableItems <>(pages.getContent(), pages.getTotalPages());
 		} catch (Exception ex) {
 			log.error("Error occurred while getting all categories: {}", ex.getMessage());
 			throw new ResourceException("Error occurred to get categories");
