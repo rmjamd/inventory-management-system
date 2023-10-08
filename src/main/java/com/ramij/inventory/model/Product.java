@@ -4,16 +4,17 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
 @Data
+@Accessors(chain = true)
 public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@NotNull
 	Long productId;
 	@Positive
 	int  quantity;
@@ -26,7 +27,6 @@ public class Product {
 	@JoinColumn(name = "design_id")
 	@NotNull
 	Design design;
-	@NotNull
 	private Size size;
 
 
@@ -34,8 +34,8 @@ public class Product {
 	@Embeddable
 	public static class Size {
 		private SizeName sizeName;
-		private double   height;
-		private double   width;
+		private Double   height;
+		private Double   width;
 
 		public enum SizeName {
 			M, X, L, XXL

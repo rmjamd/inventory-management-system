@@ -107,10 +107,10 @@ public class DesignService {
 	}
 
 
-	public Optional <DesignResponse> getDesignByName (String name) {
+	public DesignResponse getDesignByName (String name) {
 		try {
-			Optional <Design> designOptional = designService.findByDesignName(name);
-			return designOptional.map(this::mapDesignToResponse);
+			Design designName = designService.findByDesignName(name);
+			return mapDesignToResponse(designName);
 		} catch (Exception e) {
 			log.error("Error in fetching a design by Name", e);
 			throw new ResourceException("Error in fetching a design by Name");

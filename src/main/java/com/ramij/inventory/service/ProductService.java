@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,20 +23,18 @@ public class ProductService {
 	private final ProductRepository productRepository;
 	private final DesignRepository  designService;
 
+
 	@Autowired
-	public ProductService(ProductRepository productRepository, DesignRepository designService) {
+	public ProductService (ProductRepository productRepository, DesignRepository designService) {
 		this.productRepository = productRepository;
 		this.designService     = designService;
 	}
 
+
 	@Transactional
-	public ProductResponse createProduct(ProductRequest productRequest) {
+	public ProductResponse createProduct (ProductRequest productRequest) {
 		log.info("Creating a new product with details: {}", productRequest);
 
-		Optional<Design> design = designService.findByDesignName(productRequest.getDesignName());
-		if (design.isEmpty()) {
-			throw new ResourceException(String.format("Design with name: %s not found", productRequest.getDesignName()));
-		}
 
 		try {
 			Product product = new Product();
@@ -45,20 +42,25 @@ public class ProductService {
 			product.setCurrentCost(productRequest.getCurrentCost());
 			product.setCreationDate(LocalDate.now());
 			product.setSize(productRequest.getSize());
-			product.setDesign(design.get());
+			Design design = designService.findByDesignName(productRequest.getDesignName());
+			if (design == null) {
+				throw new ResourceException(String.format("Design with name: %s not found", productRequest.getDesignName()));
+			}
+			product.setDesign(design);
 
 			Product savedProduct = productRepository.save(product);
 			log.info("Created a new product with ID: {}", savedProduct.getProductId());
 
-			return mapProductToProductResponse(savedProduct);
+			return mapProductToProductResponse(savedProduct).setDesignName(design.getDesignName());
 		} catch (Exception ex) {
 			log.error("Error occurred while creating a product: {}", ex.getMessage());
 			throw new ResourceException("Error occurred to create a product");
 		}
 	}
 
+
 	@Transactional(readOnly = true)
-	public ProductResponse getProductById(Long productId) {
+	public ProductResponse getProductById (Long productId) {
 		log.info("Getting product by ID: {}", productId);
 
 		try {
@@ -71,18 +73,20 @@ public class ProductService {
 		}
 	}
 
+
 	@Transactional(readOnly = true)
-	public List<ProductResponse> getAllProducts() {
+	public List <ProductResponse> getAllProducts () {
 		log.info("Getting all products");
 
-		List<Product> products = productRepository.findAll();
+		List <Product> products = productRepository.findAll();
 		return products.stream()
 					   .map(this::mapProductToProductResponse)
 					   .collect(Collectors.toList());
 	}
 
+
 	@Transactional
-	public void deleteProduct(Long productId) {
+	public void deleteProduct (Long productId) {
 		log.info("Deleting product with ID: {}", productId);
 
 		try {
@@ -96,7 +100,8 @@ public class ProductService {
 
 	// Add other CRUD operations and mapping methods here
 
-	private ProductResponse mapProductToProductResponse(Product product) {
+
+	private ProductResponse mapProductToProductResponse (Product product) {
 		ProductResponse productResponse = new ProductResponse();
 		productResponse.setProductId(product.getProductId());
 		productResponse.setQuantity(product.getQuantity());

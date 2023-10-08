@@ -97,7 +97,7 @@ public class DesignController {
 			@PathVariable
 			String name) {
 		log.info("Fetching design by Name: {}", name);
-		Optional <DesignResponse> designOptional = designService.getDesignByName(name);
-		return designOptional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+		DesignResponse design = designService.getDesignByName(name);
+		return ResponseEntity.ok(design);
 	}
 }
