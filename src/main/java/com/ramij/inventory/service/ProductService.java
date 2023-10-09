@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 @Log4j2
@@ -34,26 +34,34 @@ public class ProductService {
 	@Transactional
 	public ProductResponse createProduct (ProductRequest productRequest) {
 		log.info("Creating a new product with details: {}", productRequest);
-
-
 		try {
-			Product product = new Product();
-			product.setQuantity(productRequest.getQuantity());
-			product.setCurrentCost(productRequest.getCurrentCost());
-			product.setCreationDate(LocalDate.now());
-			product.setSize(productRequest.getSize());
 			Design design = designService.findByDesignName(productRequest.getDesignName());
 			if (design == null) {
 				throw new ResourceException(String.format("Design with name: %s not found", productRequest.getDesignName()));
 			}
-			product.setDesign(design);
-
-			Product savedProduct = productRepository.save(product);
-			log.info("Created a new product with ID: {}", savedProduct.getProductId());
-
-			return mapProductToProductResponse(savedProduct).setDesignName(design.getDesignName());
+			Optional <Product> optionalProduct = productRepository.findByDesignIdAndProductSize(design, productRequest.getSize().getSizeName());
+			Product            product;
+			Product            updatedOrSavedProduct;
+			if (optionalProduct.isEmpty()) {
+				product = new Product();
+				product.setQuantity(productRequest.getQuantity());
+				product.setCurrentCost(productRequest.getCurrentCost());
+				product.setCreationDate(LocalDate.now());
+				product.setSize(productRequest.getSize());
+				product.setDesign(design);
+				updatedOrSavedProduct = productRepository.save(product);
+				log.info("Created a new product with ID: {}", updatedOrSavedProduct.getProductId());
+			} else {
+				product = optionalProduct.get();
+				product.setCurrentCost(productRequest.getCurrentCost());
+				product.setQuantity(product.getQuantity() + productRequest.getQuantity());
+				product.setCreationDate(LocalDate.now());
+				updatedOrSavedProduct = productRepository.save(product);
+				log.info("Updated productList with ID: {}", updatedOrSavedProduct.getProductId());
+			}
+			return mapProductToProductResponse(updatedOrSavedProduct);
 		} catch (Exception ex) {
-			log.error("Error occurred while creating a product: {}", ex.getMessage());
+			log.error("Error occurred while creating a product: ", ex);
 			throw new ResourceException("Error occurred to create a product");
 		}
 	}
@@ -80,8 +88,7 @@ public class ProductService {
 
 		List <Product> products = productRepository.findAll();
 		return products.stream()
-					   .map(this::mapProductToProductResponse)
-					   .collect(Collectors.toList());
+					   .map(this::mapProductToProductResponse).toList();
 	}
 
 
@@ -108,7 +115,6 @@ public class ProductService {
 		productResponse.setCurrentCost(product.getCurrentCost());
 		productResponse.setCreationDate(product.getCreationDate());
 		productResponse.setSize(product.getSize());
-		// You may also set the design details here if needed.
 		return productResponse;
 	}
 }

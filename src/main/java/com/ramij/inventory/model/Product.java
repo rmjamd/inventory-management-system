@@ -33,6 +33,7 @@ public class Product {
 	@Data
 	@Embeddable
 	public static class Size {
+		@Enumerated(EnumType.STRING)
 		private SizeName sizeName;
 		private Double   height;
 		private Double   width;

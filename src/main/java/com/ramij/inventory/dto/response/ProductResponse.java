@@ -14,6 +14,5 @@ public class ProductResponse {
 	private int          quantity;
 	private BigDecimal   currentCost;
 	private LocalDate    creationDate;
-	private String       designName;
 	private Product.Size size;
 }
