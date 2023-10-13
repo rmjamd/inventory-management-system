@@ -82,10 +82,8 @@ public class SubCategoryController {
 	}
 
 
-	@GetMapping("/subcategory")
-	public ResponseEntity <List <String>> getSubCategoryNameList (
-			@RequestParam(name = "name")
-			String subCategoryName) {
+	@GetMapping("/subcategory/names")
+	public ResponseEntity <List <String>> getSubCategoryNameList () {
 		List <String> list =subCategoryService.getAllSubcategoryNames();
 		return new ResponseEntity <>(list, HttpStatus.OK);
 	}
