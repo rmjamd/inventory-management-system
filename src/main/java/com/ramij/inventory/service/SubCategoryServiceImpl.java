@@ -113,6 +113,12 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 
 
 	@Override
+	public List <String> getAllSubcategoryNames () {
+		return subCategoryRepository.findAll().stream().map(SubCategory::getSubCategoryName).toList();
+	}
+
+
+	@Override
 	@Transactional
 	public void deleteSubCategory (Long subCategoryId) {
 		try {
