@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Log4j2
@@ -25,6 +26,7 @@ public class CategoryService {
 	}
 
 
+	@Transactional
 	public Category createCategory (Category category) {
 		log.info("Creating a new category: {}", category);
 
@@ -39,7 +41,7 @@ public class CategoryService {
 		}
 	}
 
-
+	@Transactional
 	public PageableItems <Category> getAllCategories (int pageNo, int size) {
 		log.info("Getting all categories with page: {}, size: {}", pageNo, size);
 
@@ -53,7 +55,7 @@ public class CategoryService {
 		}
 	}
 
-
+	@Transactional
 	public Category getCategoryById (Long categoryId) {
 		log.info("Getting category by ID: {}", categoryId);
 
@@ -66,7 +68,7 @@ public class CategoryService {
 		}
 	}
 
-
+	@Transactional
 	public Category updateCategory (Long categoryId, Category updatedCategory) {
 		log.info("Updating category with ID: {}, updated category: {}", categoryId, updatedCategory);
 
@@ -89,7 +91,7 @@ public class CategoryService {
 		}
 	}
 
-
+	@Transactional
 	public void deleteCategory (Long categoryId) {
 		log.info("Deleting category with ID: {}", categoryId);
 
@@ -104,7 +106,7 @@ public class CategoryService {
 		}
 	}
 
-
+	@Transactional
 	public Category getCategoryByName (String categoryName) {
 		log.info("Getting category by name: {}", categoryName);
 

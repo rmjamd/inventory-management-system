@@ -15,22 +15,239 @@
 
         .container {
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: flex-start; /* Vertically align to the top */
             height: 100vh;
         }
 
-        h1 {
-            font-size: 36px;
-            color: #FF1493; /* Deep Pink */
+        .half {
+            width: 50%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .add-design {
+            background-color: #E6E6FA; /* Lavender */
+            border-radius: 10px;
+            margin: 20px;
+        }
+
+        .get-designs {
+            background-color: #E6E6FA; /* Lavender */
+            border-radius: 10px;
+            margin: 20px;
+        }
+
+        .half input {
+            width: 50%; /* Set input width to half of the container */
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #888;
+            border-radius: 5px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .api-button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+        }
+
+        /* Pagination styles */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .page-link {
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        /* Table styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #888;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
         }
 
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>Welcome to Design Management</h1>
+    <div class="half add-design">
+        <h1>Add Design</h1>
+        <form id="design-form">
+            <label for="subCategoryName">Sub Category Name:</label>
+            <input type="text" id="subCategoryName" name="subCategoryName" required>
+            <label for="designName">Design Name:</label>
+            <input type="text" id="designName" name="designName" required>
+            <label for="description">Description:</label>
+            <input type="text" id="description" name="description" required>
+            <label for="creatorName">Creator Name:</label>
+            <input type="text" id="creatorName" name="creatorName" required>
+        </form>
+        <button class="api-button" onclick="createDesign()">Create Design</button>
+    </div>
+
+    <div class="half get-designs">
+        <h1>Get All Designs</h1>
+        <button class="api-button" style="background-color: #4CAF50;" onclick="getAllDesigns()">Get All Designs</button>
+        <table id="designs-table">
+            <thead>
+            <tr>
+                <th>Design Name</th>
+                <th>Description</th>
+                <th>Creator</th>
+            </tr>
+            </thead>
+            <tbody id="designs-list"></tbody>
+        </table>
+        <div class="pagination" id="pagination"></div>
+    </div>
 </div>
+
+<script>
+    // Function to display designs
+    function getAllDesigns(){
+        loadPage(0);
+    }
+    function displayDesigns(data) {
+        const designsList = document.getElementById('designs-list');
+        designsList.innerHTML = '';
+
+        if (data.length > 0) {
+            data.forEach(design => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${design.designName}</td><td>${design.description}</td><td>${design.creatorName}</td>`;
+                designsList.appendChild(row);
+            });
+        } else {
+            designsList.innerHTML = '<tr><td colspan="3">No designs found.</td></tr>';
+        }
+    }
+
+    // Function to generate pagination links
+    function generatePagination(totalPages, currentPage) {
+        const pagination = document.getElementById('pagination');
+        pagination.innerHTML = '';
+
+        // Add "Previous" button
+        const prevButton = document.createElement('button');
+        prevButton.textContent = 'Previous';
+        prevButton.classList.add('page-link');
+        prevButton.addEventListener('click', () => loadPage(currentPage - 1));
+        pagination.appendChild(prevButton);
+
+        for (let page = 0; page < totalPages; page++) {
+            const pageLink = document.createElement('span');
+            pageLink.textContent = page;
+            pageLink.classList.add('page-link');
+            pageLink.addEventListener('click', () => loadPage(page));
+            pagination.appendChild(pageLink);
+        }
+
+        // Add "Next" button
+        const nextButton = document.createElement('button');
+        nextButton.textContent = 'Next';
+        nextButton.classList.add('page-link');
+        nextButton.addEventListener('click', () => loadPage(currentPage + 1));
+        pagination.appendChild(nextButton);
+
+        // Disable "Previous" button if on the first page
+        if (currentPage === 0) {
+            prevButton.disabled = true;
+        }
+
+        // Disable "Next" button if on the last page
+        if (currentPage === totalPages - 1) {
+            nextButton.disabled = true;
+        }
+    }
+
+    // Function to load a specific page
+    function loadPage(page) {
+        // Make an API request to get designs for the specified page and size
+        const pageSize = 5;
+        fetch(`http://localhost:4040/api/designs?page=${page}&size=${pageSize}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Display the designs for the selected page
+            displayDesigns(data.contents);
+
+            // Update pagination with the current page
+            generatePagination(data.totalPages, page);
+        })
+        .catch(error => {
+            console.error('API request error:', error);
+        });
+    }
+
+    // Initial load of the first page
+    // loadPage(0);
+
+
+
+
+         function createDesign() {
+             const form = document.getElementById('design-form');
+             const formData = new FormData(form);
+
+             // Get the subCategoryName and remove it from the form data
+             const subCategoryName = formData.get('subCategoryName');
+             formData.delete('subCategoryName');
+
+             // API request with subCategoryName as a query parameter
+             const apiUrl = `http://localhost:4040/api/design?subCategoryName=${subCategoryName}`;
+
+             fetch(apiUrl, {
+                 method: 'POST',
+                 headers: {
+                     'Content-Type': 'application/json',
+                 },
+                 body: JSON.stringify(Object.fromEntries(formData))
+             })
+             .then(response => {
+                 if (response.ok) {
+                     // Handle success
+                     alert('Design created successfully!');
+                 } else {
+                     // Handle error
+                     alert('Failed to create design');
+                 }
+             })
+             .catch(error => {
+                 console.error('API request error:', error);
+             });
+         }
+</script>
 </body>
 </html>

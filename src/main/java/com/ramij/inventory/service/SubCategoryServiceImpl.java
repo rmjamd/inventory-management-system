@@ -30,6 +30,7 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 
 
 	@Override
+	@Transactional
 	public SubCategory createSubCategory (SubCategory subCategory) {
 
 		if (subCategory.getCategory() == null || subCategory.getCategory().getCategoryId() == null) {

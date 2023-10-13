@@ -1,14 +1,18 @@
 package com.ramij.inventory.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.util.List;
 
 @Entity
-@Data
+@Setter
+@Getter
 @Accessors(chain = true)
+@ToString(exclude = {"subCategory", "products"})
 public class Design {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +22,7 @@ public class Design {
 	private String description;
 	private String creatorName;
 
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = false,fetch = FetchType.LAZY)
 	@JoinColumn(name = "sub_category_id")
 	private SubCategory subCategory;
 

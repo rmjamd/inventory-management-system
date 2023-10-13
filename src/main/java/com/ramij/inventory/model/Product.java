@@ -4,14 +4,19 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Data
+@Setter
+@Getter
 @Accessors(chain = true)
+@ToString(exclude = {"design"})
 public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
