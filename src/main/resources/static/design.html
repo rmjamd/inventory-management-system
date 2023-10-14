@@ -93,6 +93,33 @@
             background-color: #4CAF50;
             color: white;
         }
+        /* Style for the suggestion list */
+/* Style for the suggestion list */
+/* Style for the suggestion list */
+.suggestions {
+    border: 1px solid #888;
+    max-height: 200px;
+    overflow-y: auto;
+    position: absolute;
+    background-color: white;
+    z-index: 1;
+    border-radius: 0 0 5px 5px;
+    display: none;
+}
+
+.suggestion-item {
+    padding: 5px;
+    cursor: pointer;
+    border-top: 1px solid #888;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.suggestion-item:first-child {
+    border-top: none;
+}
+
+
 
     </style>
 </head>
@@ -102,7 +129,8 @@
         <h1>Add Design</h1>
         <form id="design-form">
             <label for="subCategoryName">Sub Category Name:</label>
-            <input type="text" id="subCategoryName" name="subCategoryName" required>
+            <input type="text" id="subCategoryName" name="subCategoryName" required oninput="suggestSubCategories()">
+            <div id="suggestions" class="suggestions"></div>
             <label for="designName">Design Name:</label>
             <input type="text" id="designName" name="designName" required>
             <label for="description">Description:</label>
@@ -248,6 +276,42 @@
                  console.error('API request error:', error);
              });
          }
+
+
+// Function to suggest subcategories based on user input
+function suggestSubCategories() {
+    suggestionList.innerHTML = ''; // Clear previous suggestions
+
+    const searchValue = subCategoryInput.value.toLowerCase();
+
+    // Display the matched subcategory suggestions with a border
+    subCategoryNames.forEach(subCategory => {
+        if (subCategory.toLowerCase().startsWith(searchValue)) {
+            const suggestionItem = document.createElement('div');
+            suggestionItem.textContent = subCategory;
+            suggestionItem.classList.add('suggestion-item');
+            suggestionItem.addEventListener('click', () => {
+                // When a suggestion is clicked, fill the input with the suggestion
+                subCategoryInput.value = subCategory;
+                suggestionList.innerHTML = ''; // Clear suggestions
+            });
+            suggestionList.appendChild(suggestionItem);
+        }
+    });
+
+    // Show the suggestions if there are any, and position it below the input
+    if (suggestionList.children.length > 0) {
+        suggestionList.style.display = 'block';
+        const inputRect = subCategoryInput.getBoundingClientRect();
+        suggestionList.style.top = inputRect.bottom + 'px';
+        suggestionList.style.left = inputRect.left + 'px';
+    } else {
+        suggestionList.style.display = 'none';
+    }
+}
+
+
+
 </script>
 </body>
 </html>
