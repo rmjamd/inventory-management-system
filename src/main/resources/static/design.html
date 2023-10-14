@@ -96,6 +96,7 @@
         /* Style for the suggestion list */
 /* Style for the suggestion list */
 /* Style for the suggestion list */
+/* Style for the suggestion list */
 .suggestions {
     border: 1px solid #888;
     max-height: 200px;
@@ -111,8 +112,6 @@
     padding: 5px;
     cursor: pointer;
     border-top: 1px solid #888;
-    width: 100%;
-    box-sizing: border-box;
 }
 
 .suggestion-item:first-child {
@@ -279,6 +278,26 @@
 
 
 // Function to suggest subcategories based on user input
+let subCategoryNames = []; // Array to store subcategory names
+const subCategoryInput = document.getElementById('subCategoryName');
+const suggestionList = document.getElementById('suggestions');
+
+// Fetch the list of subcategory names from the API
+fetch('http://localhost:4040/api/subcategory/names', {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+    }
+})
+.then(response => response.json())
+.then(data => {
+    subCategoryNames = data; // Store subcategory names in the array
+})
+.catch(error => {
+    console.error('API request error:', error);
+});
+
+// Function to suggest subcategories based on user input
 function suggestSubCategories() {
     suggestionList.innerHTML = ''; // Clear previous suggestions
 
@@ -299,16 +318,25 @@ function suggestSubCategories() {
         }
     });
 
-    // Show the suggestions if there are any, and position it below the input
+    // Show the suggestions if there are any
     if (suggestionList.children.length > 0) {
         suggestionList.style.display = 'block';
-        const inputRect = subCategoryInput.getBoundingClientRect();
-        suggestionList.style.top = inputRect.bottom + 'px';
-        suggestionList.style.left = inputRect.left + 'px';
     } else {
         suggestionList.style.display = 'none';
     }
 }
+
+// Listen for clicks on the document to hide suggestions when clicking elsewhere
+document.addEventListener('click', (event) => {
+    if (event.target !== subCategoryInput && event.target !== suggestionList) {
+        suggestionList.style.display = 'none'; // Hide suggestions
+    }
+});
+
+// Prevent clicks within the suggestions list from hiding the suggestions
+suggestionList.addEventListener('click', (event) => {
+    event.stopPropagation();
+});
 
 
 
