@@ -1,0 +1,81 @@
+body {
+            background-color: #FFB6C1; /* Light Pink */
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Vertically align to the top */
+            height: 100vh;
+        }
+
+        .half {
+            width: 50%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .add-design {
+            background-color: #E6E6FA; /* Lavender */
+            border-radius: 10px;
+            margin: 20px;
+        }
+
+        .get-designs {
+            background-color: #E6E6FA; /* Lavender */
+            border-radius: 10px;
+            margin: 20px;
+        }
+
+        .half input {
+            width: 50%; /* Set input width to half of the container */
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #888;
+            border-radius: 5px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .api-button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+        }
+
+        /* Style for the suggestion list */
+        .suggestions {
+            border: 1px solid #888;
+            max-height: 200px;
+            overflow-y: auto;
+            position: absolute;
+            background-color: white;
+            z-index: 1;
+            border-radius: 0 0 5px 5px;
+            display: none;
+        }
+
+        .suggestion-item {
+            padding: 5px;
+            cursor: pointer;
+            border-top: 1px solid #888;
+        }
+
+        .suggestion-item:first-child {
+            border-top: none;
+        }
