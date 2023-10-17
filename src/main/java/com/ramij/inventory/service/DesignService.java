@@ -39,7 +39,7 @@ public class DesignService {
 			design.setDescription(request.getDescription());
 			design.setCreatorName(request.getCreatorName());
 			design.setSubCategory(subCategoryService.getSubCategoryByName(subCategoryName));
-			design.setImage(design.getImage());
+			design.setImage(image.getBytes());
 			design = designService.save(design);
 
 			DesignResponse response = mapDesignToResponse(design);
@@ -133,6 +133,7 @@ public class DesignService {
 		response.setDesignName(design.getDesignName());
 		response.setDescription(design.getDescription());
 		response.setCreatorName(design.getCreatorName());
+		response.setImage(design.getImage());
 		return response;
 	}
 }

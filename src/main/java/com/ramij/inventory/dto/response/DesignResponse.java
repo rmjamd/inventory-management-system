@@ -8,6 +8,7 @@ public class DesignResponse {
 	private String designName;
 	private String description;
 	private String creatorName;
+	byte[] image;
 
 	// Constructors, getters, and setters
 }
