@@ -1,6 +1,7 @@
 package com.ramij.inventory.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -29,5 +30,7 @@ public class Design {
 	@OneToMany(mappedBy = "design",
 			   cascade = CascadeType.ALL)
 	private List <Product> products;
-
+	@Lob
+	@Size(max = 102400, message = "Image size should not exceed 100KB")
+	private byte[] image;
 }

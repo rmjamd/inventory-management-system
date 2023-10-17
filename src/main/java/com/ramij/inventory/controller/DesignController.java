@@ -7,9 +7,11 @@ import com.ramij.inventory.service.DesignService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -26,17 +28,19 @@ public class DesignController {
 	}
 
 
-	@PostMapping("/design")
+	@PostMapping(path = "/design",
+				 consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_OCTET_STREAM_VALUE})
 	public ResponseEntity <DesignResponse> createDesign (
 			@NonNull
 			@RequestParam(name = "subCategoryName")
 			String subCategoryName,
-			@RequestBody
+			@RequestPart("image")
+			MultipartFile image,
+			@RequestPart("data")
 			DesignRequest request) {
 		log.info("Creating design for subCategoryName: {}", subCategoryName);
-
 		// Service logic to create design
-		DesignResponse response = designService.createDesign(request, subCategoryName);
+		DesignResponse response = designService.createDesign(request, subCategoryName, image);
 
 		log.info("Design created successfully for subCategoryName: {}", subCategoryName);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);

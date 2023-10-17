@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +31,7 @@ public class DesignService {
 	}
 
 
-	public DesignResponse createDesign (DesignRequest request, String subCategoryName) {
+	public DesignResponse createDesign (DesignRequest request, String subCategoryName, MultipartFile image) {
 		try {
 
 			Design design = new Design();
@@ -38,6 +39,7 @@ public class DesignService {
 			design.setDescription(request.getDescription());
 			design.setCreatorName(request.getCreatorName());
 			design.setSubCategory(subCategoryService.getSubCategoryByName(subCategoryName));
+			design.setImage(design.getImage());
 			design = designService.save(design);
 
 			DesignResponse response = mapDesignToResponse(design);
