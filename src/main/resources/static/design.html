@@ -9,9 +9,9 @@
 </head>
 <body>
 <div class="container">
-    <div class="half add-design">
+    <div class="two-fifths add-design">
         <h1>Add Design</h1>
-        <form id="design-form">
+        <form id="design-form" enctype="multipart/form-data">
             <label for="subCategoryName">Sub Category Name:</label>
             <input type="text" id="subCategoryName" name="subCategoryName" required oninput="suggestSubCategories()">
             <div id="suggestions" class="suggestions"></div>
@@ -21,11 +21,14 @@
             <input type="text" id="description" name="description" required>
             <label for="creatorName">Creator Name:</label>
             <input type="text" id="creatorName" name="creatorName" required>
+            <label for="image">Image:</label>
+            <input type="file" id="image" name="image" accept="image/*" required>
+            <img id="selectedImage" src="" alt="Selected Image" class="selected-image">
         </form>
         <button class="api-button" onclick="createDesign()">Create Design</button>
     </div>
 
-    <div class="half get-designs">
+    <div class="three-fifths get-designs">
         <h1>Get All Designs</h1>
         <button class="api-button" style="background-color: #4CAF50;" onclick="getAllDesigns()">Get All Designs</button>
         <table id="designs-table">

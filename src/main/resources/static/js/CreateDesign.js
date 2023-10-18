@@ -1,34 +1,74 @@
-        function createDesign() {
-             const form = document.getElementById('design-form');
-             const formData = new FormData(form);
+function createDesign() {
+    const form = document.getElementById('design-form');
+    const formData = new FormData(form);
+    const subCategoryName = formData.get('subCategoryName');
+    formData.delete('subCategoryName');
+    const formDataObject = {};
+    for (const [key, value] of formData.entries()) {
+        formDataObject[key] = value;
+    }
 
-             // Get the subCategoryName and remove it from the form data
-             const subCategoryName = formData.get('subCategoryName');
-             formData.delete('subCategoryName');
+    // Get the image file separately
+    const imageInput = document.getElementById('image');
+    const imageFile = imageInput.files[0];
 
-             // API request with subCategoryName as a query parameter
-             const apiUrl = `http://localhost:4040/api/design?subCategoryName=${subCategoryName}`;
+    // API request with subCategoryName as a query parameter
+    const apiUrl = `http://localhost:4040/api/design?subCategoryName=${subCategoryName}`;
 
-             fetch(apiUrl, {
-                 method: 'POST',
-                 headers: {
-                     'Content-Type': 'application/json',
-                 },
-                 body: JSON.stringify(Object.fromEntries(formData))
-             })
-             .then(response => {
-                 if (response.ok) {
-                     // Handle success
-                     alert('Design created successfully!');
-                 } else {
-                     // Handle error
-                     alert('Failed to create design');
-                 }
-             })
-             .catch(error => {
-                 console.error('API request error:', error);
-             });
-         }
+    // Create a new FormData object and append the image
+    const combinedData = new FormData();
+    combinedData.append('image', imageFile);
+
+    // Add the data as a JSON string with a specified content type
+//    const dataObject = {
+//        designName: formData.get(''),
+//        description: 'YourDescription',
+//        creatorName: 'YourCreatorName'
+//    };
+    combinedData.append('data', new Blob([JSON.stringify(formDataObject)], { type: 'application/json' }));
+
+    // Append the remaining form data to combinedData
+    for (var pair of formData.entries()) {
+        combinedData.append(pair[0], pair[1]);
+    }
+
+    fetch(apiUrl, {
+        method: 'POST',
+        body: combinedData
+    })
+    .then(response => {
+        if (response.ok) {
+            // Handle success
+            alert('Design created successfully!');
+        } else {
+            // Handle error
+            alert('Failed to create design');
+        }
+    })
+    .catch(error => {
+        console.error('API request error:', error);
+    });
+}
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const imageInput = document.getElementById("image");
+    const selectedImage = document.getElementById("selectedImage");
+
+    imageInput.addEventListener("change", function () {
+        const selectedFile = imageInput.files[0];
+
+        if (selectedFile) {
+            const objectURL = URL.createObjectURL(selectedFile);
+            selectedImage.src = objectURL;
+        } else {
+            selectedImage.src = ""; // Clear the image if no file is selected
+        }
+    });
+
+    // Your existing code here...
+});
 
 
 // Function to suggest subcategories based on user input
