@@ -44,7 +44,7 @@ body {
             margin: 20px;
         }
 
-        .half input {
+        .two-fifths input {
             width: 50%; /* Set input width to half of the container */
             padding: 10px;
             margin: 5px;

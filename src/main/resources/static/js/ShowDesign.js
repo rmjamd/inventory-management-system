@@ -1,20 +1,34 @@
+  const defaultImageUrl = '/image/inventory.jpg';
+  const columnWidth = 200;
     function getAllDesigns(){
         loadPage(0);
     }
-    function displayDesigns(data) {
-        const designsList = document.getElementById('designs-list');
-        designsList.innerHTML = '';
+function displayDesigns(data) {
+    const designsList = document.getElementById('designs-list');
+    designsList.innerHTML = '';
 
-        if (data.length > 0) {
-            data.forEach(design => {
-                const row = document.createElement('tr');
-                row.innerHTML = `<td>${design.designName}</td><td>${design.description}</td><td>${design.creatorName}</td>`;
-                designsList.appendChild(row);
-            });
-        } else {
-            designsList.innerHTML = '<tr><td colspan="3">No designs found.</td></tr>';
-        }
+    if (data.length > 0) {
+        data.forEach(design => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="design-name" data-image-name="${design.imageName}">${design.designName}</td>
+                <td>${design.description}</td>
+                <td>${design.creatorName}</td>
+                <td><img src="/image/${design.imageName || 'inventory.jpg'}" alt="Design Image" class="design-image" style="width: ${columnWidth}px; height: ${columnWidth / 2}px;">
+                </td>
+            `;
+            designsList.appendChild(row);
+        });
+
+        // Add click event listeners to design names to display mini image
+        const designNameElements = document.querySelectorAll('.design-name');
+        designNameElements.forEach(element => {
+            element.addEventListener('click', () => displayMiniImage(element));
+        });
+    } else {
+        designsList.innerHTML = '<tr><td col span="4">No designs found.</td></tr>';
     }
+}
 
     // Function to generate pagination links
     function generatePagination(totalPages, currentPage) {
@@ -76,3 +90,13 @@
             console.error('API request error:', error);
         });
     }
+    function displayMiniImage(designNameElement) {
+        const imageName = designNameElement.getAttribute('data-image-name');
+        const imageUrl = imageName ? `/image/${imageName}` : defaultImageUrl;
+        const miniImage = document.getElementById('mini-design-image');
+        miniImage.src = imageUrl;
+    }
+
+    // Initial call to display a default image
+    displayMiniImage({ getAttribute: () => null }); // Pass an empty object to show the default image
+
