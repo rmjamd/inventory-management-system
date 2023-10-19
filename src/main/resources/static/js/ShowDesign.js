@@ -7,14 +7,16 @@ function displayDesigns(data) {
     const designsList = document.getElementById('designs-list');
     designsList.innerHTML = '';
 
+
     if (data.length > 0) {
         data.forEach(design => {
+			const dataURL = "data:image/jpeg;base64," + design.image;
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td class="design-name" data-image-name="${design.imageName}">${design.designName}</td>
+                <td>${design.designName}</td>
                 <td>${design.description}</td>
                 <td>${design.creatorName}</td>
-                <td><img src="/image/${design.imageName || 'inventory.jpg'}" alt="Design Image" class="design-image" style="width: ${columnWidth}px; height: ${columnWidth / 2}px;">
+                <td><img src=${dataURL} alt="Design Image" class="design-image" style="width: ${columnWidth}px; height: ${columnWidth / 2}px;">
                 </td>
             `;
             designsList.appendChild(row);

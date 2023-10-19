@@ -31,7 +31,7 @@ public class Design {
 			   cascade = CascadeType.ALL)
 	private List <Product> products;
 	@Lob
-	@Column(columnDefinition = "BLOB")
-	@Size(max = 102400, message = "Image size should not exceed 100KB")
+	@Column(columnDefinition = "MEDIUMBLOB")
+	@Size(max = 512400, message = "Image size should not exceed 100KB")
 	private byte[] image;
 }
