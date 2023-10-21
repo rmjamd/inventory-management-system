@@ -1,15 +1,15 @@
 body {
     font-family: Arial, sans-serif;
-    background: linear-gradient(45deg, #FF5733, #33FF57);
+    background: linear-gradient(135deg, #3498db, #c0392b);
     background-size: cover;
     background-attachment: fixed;
-    color: #333;
+    color: #fff;
 }
 
 .container {
     width: 80%;
     margin: 0 auto;
-    background-color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.9);
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
@@ -25,6 +25,9 @@ h1 {
     flex-direction: column;
     align-items: center;
     gap: 10px;
+    background: #f1c40f;
+    padding: 15px;
+    border-radius: 10px;
 }
 
 input[type="text"],
@@ -39,7 +42,7 @@ select {
 
 button {
     padding: 10px 20px;
-    background: #007BFF;
+    background: #e74c3c;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -48,7 +51,7 @@ button {
 }
 
 button:hover {
-    background: #0056b3;
+    background: #c0392b;
 }
 
 #product-list {
@@ -56,7 +59,7 @@ button:hover {
 }
 
 .product-card {
-    background-color: #fff;
+    background: #ecf0f1;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -66,4 +69,5 @@ button:hover {
 
 .product-card p {
     margin: 0;
+    color: #333;
 }
