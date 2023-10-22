@@ -25,12 +25,33 @@
             font-size: 36px;
             color: #1E90FF; /* Dodger Blue */
         }
+       .btn-container {
+            display: flex;
+            gap: 20px;
+        }
 
+        .btn {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>Welcome to Product Management</h1>
+    <div class="btn-container">
+        <a href="/AddProduct.html" class="btn">Add Product</a>
+        <a href="/ShowProduct.html" class="btn">Show Product</a>
+    </div>
 </div>
 </body>
 </html>
