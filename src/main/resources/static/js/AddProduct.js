@@ -3,8 +3,9 @@ async function addProduct() {
     const quantity = parseInt(document.getElementById("quantity").value);
     const currentCost = parseFloat(document.getElementById("currentCost").value);
     const sizeName = document.getElementById("sizeName").value;
+    const color = document.getElementById("color").value;
 
-    if (!designName || !quantity || !currentCost || !sizeName) {
+    if (!designName || !quantity || !currentCost || !sizeName || !color) {
         alert("All fields are required!");
         return;
     }
@@ -26,6 +27,7 @@ async function addProduct() {
         size: {
             sizeName: sizeName,
         },
+        color: color,
     };
 
     try {
@@ -43,6 +45,7 @@ async function addProduct() {
             document.getElementById("quantity").value = "";
             document.getElementById("currentCost").value = "";
             document.getElementById("sizeName").value = "";
+            document.getElementById("color").value = "";
         } else {
             alert("Failed to create the product. Please try again.");
         }

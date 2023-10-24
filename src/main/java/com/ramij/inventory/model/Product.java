@@ -33,7 +33,7 @@ public class Product {
 	@NotNull
 	Design design;
 	private Size size;
-
+	private Color color;
 
 	@Data
 	@Embeddable

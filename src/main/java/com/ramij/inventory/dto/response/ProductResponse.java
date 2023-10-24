@@ -1,5 +1,6 @@
 package com.ramij.inventory.dto.response;
 
+import com.ramij.inventory.model.Color;
 import com.ramij.inventory.model.Product;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -15,5 +16,6 @@ public class ProductResponse {
 	private BigDecimal   currentCost;
 	private LocalDate    creationDate;
 	private Product.Size size;
-	private String       designName;
+	private     String designName;
+	private Color  color;
 }

@@ -42,7 +42,7 @@ public class ProductService {
 			if (design == null) {
 				throw new ResourceException(String.format("Design with name: %s not found", productRequest.getDesignName()));
 			}
-			Optional <Product> optionalProduct = productRepository.findByDesignIdAndProductSize(design, productRequest.getSize().getSizeName());
+			Optional <Product> optionalProduct = productRepository.findByDesignIdAndProductSize(design, productRequest.getSize().getSizeName(), productRequest.getColor());
 			Product            product;
 			Product            updatedOrSavedProduct;
 			if (optionalProduct.isEmpty()) {
@@ -51,6 +51,7 @@ public class ProductService {
 				product.setCurrentCost(productRequest.getCurrentCost());
 				product.setCreationDate(LocalDate.now());
 				product.setSize(productRequest.getSize());
+				product.setColor(productRequest.getColor());
 				product.setDesign(design);
 				updatedOrSavedProduct = productRepository.save(product);
 				log.info("Created a new product with ID: {}", updatedOrSavedProduct.getProductId());
@@ -120,6 +121,7 @@ public class ProductService {
 		productResponse.setCreationDate(product.getCreationDate());
 		productResponse.setSize(product.getSize());
 		productResponse.setDesignName(product.getDesign().getDesignName());
+		productResponse.setColor(product.getColor());
 		return productResponse;
 	}
 }

@@ -1,5 +1,6 @@
 package com.ramij.inventory.dto.request;
 
+import com.ramij.inventory.model.Color;
 import com.ramij.inventory.model.Product;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -17,4 +18,6 @@ public class ProductRequest {
 	private String       designName;
 	@NotNull
 	private Product.Size size;
+	@NotNull
+	Color color;
 }
