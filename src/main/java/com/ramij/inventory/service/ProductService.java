@@ -4,11 +4,14 @@ import com.ramij.inventory.dto.request.ProductRequest;
 import com.ramij.inventory.dto.response.ProductResponse;
 import com.ramij.inventory.exceptions.ResourceException;
 import com.ramij.inventory.model.Design;
+import com.ramij.inventory.model.PageableItems;
 import com.ramij.inventory.model.Product;
 import com.ramij.inventory.repository.DesignRepository;
 import com.ramij.inventory.repository.ProductRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -83,12 +86,13 @@ public class ProductService {
 
 
 	@Transactional(readOnly = true)
-	public List <ProductResponse> getAllProducts () {
+	public PageableItems <ProductResponse> getAllProducts (int pageNo, int size) {
 		log.info("Getting all products");
-
-		List <Product> products = productRepository.findAll();
-		return products.stream()
-					   .map(this::mapProductToProductResponse).toList();
+		Page <Product> products   = productRepository.findAll(PageRequest.of(pageNo, size));
+		int            totalPages = products.getTotalPages();
+		List <ProductResponse> productList = products.getContent().stream()
+													 .map(this::mapProductToProductResponse).toList();
+		return new PageableItems <>(productList, totalPages);
 	}
 
 
@@ -115,6 +119,7 @@ public class ProductService {
 		productResponse.setCurrentCost(product.getCurrentCost());
 		productResponse.setCreationDate(product.getCreationDate());
 		productResponse.setSize(product.getSize());
+		productResponse.setDesignName(product.getDesign().getDesignName());
 		return productResponse;
 	}
 }
