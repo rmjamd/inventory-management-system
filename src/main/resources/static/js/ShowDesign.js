@@ -13,7 +13,7 @@ function displayDesigns(data) {
 			const dataURL = "data:image/jpeg;base64," + design.image;
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${design.designName}</td>
+                <td><a href="/AddProduct.html" class="btn">${design.designName}</a></td>
                 <td>${design.description}</td>
                 <td>${design.creatorName}</td>
                 <td><img src=${dataURL} alt="Design Image" class="design-image" style="width: ${columnWidth}px; height: ${columnWidth / 2}px;">
