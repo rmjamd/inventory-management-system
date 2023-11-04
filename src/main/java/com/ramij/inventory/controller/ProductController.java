@@ -47,7 +47,16 @@ public class ProductController {
 			int pageNo,
 			@RequestParam(name = "size",
 						  defaultValue = "5")
-			int size
+			int size,
+			@RequestParam(name = "designName",
+						  defaultValue = "")
+			String designName,
+			@RequestParam(name = "color",
+						  defaultValue = "")
+			String color,
+			@RequestParam(name = "sortBy",
+						  defaultValue = "")
+			String sortBy
 	) {
 		log.info("Getting all products");
 		PageableItems <ProductResponse> productResponses = productService.getAllProducts(pageNo, size);
