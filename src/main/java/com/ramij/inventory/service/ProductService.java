@@ -3,6 +3,7 @@ package com.ramij.inventory.service;
 import com.ramij.inventory.dto.request.ProductRequest;
 import com.ramij.inventory.dto.response.ProductResponse;
 import com.ramij.inventory.exceptions.ResourceException;
+import com.ramij.inventory.model.Color;
 import com.ramij.inventory.model.Design;
 import com.ramij.inventory.model.PageableItems;
 import com.ramij.inventory.model.Product;
@@ -10,8 +11,7 @@ import com.ramij.inventory.repository.DesignRepository;
 import com.ramij.inventory.repository.ProductRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,7 +42,7 @@ public class ProductService {
 			if (design == null) {
 				throw new ResourceException(String.format("Design with name: %s not found", productRequest.getDesignName()));
 			}
-			Optional <Product> optionalProduct = productRepository.findByDesignIdAndProductSize(design, productRequest.getSize().getSizeName(), productRequest.getColor());
+			Optional <Product> optionalProduct = productRepository.findByDesignIdAndProductSize(productRequest.getDesignName(), productRequest.getSize().getSizeName(), productRequest.getColor());
 			Product            product;
 			Product            updatedOrSavedProduct;
 			if (optionalProduct.isEmpty()) {
@@ -52,7 +52,7 @@ public class ProductService {
 				product.setCreationDate(LocalDate.now());
 				product.setSize(productRequest.getSize());
 				product.setColor(productRequest.getColor());
-				product.setDesign(design);
+				product.setDesignName(productRequest.getDesignName());
 				updatedOrSavedProduct = productRepository.save(product);
 				log.info("Created a new product with ID: {}", updatedOrSavedProduct.getProductId());
 			} else {
@@ -87,13 +87,64 @@ public class ProductService {
 
 
 	@Transactional(readOnly = true)
-	public PageableItems <ProductResponse> getAllProducts (int pageNo, int size) {
-		log.info("Getting all products");
-		Page <Product> products   = productRepository.findAll(PageRequest.of(pageNo, size));
-		int            totalPages = products.getTotalPages();
+	public PageableItems <ProductResponse> getAllProducts (int pageNo, int size, String designName, Color color, String sortBy) {
+		log.info("Getting all products with page: {}, size: {}, designName: {}, color: {}, sortBy: {}", pageNo, size, designName, color, sortBy);
+
+		Sort     sort     = getSortBy(sortBy);
+		Pageable pageable = PageRequest.of(pageNo, size, sort);
+
+		Product exampleProduct = new Product();
+		exampleProduct.setDesignName(designName);
+		exampleProduct.setCreationDate(null);
+		exampleProduct.setColor(color);
+
+		ExampleMatcher exampleMatcher = ExampleMatcher.matching()
+													  .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING); // Adjust this as needed
+
+		Example <Product> example = Example.of(exampleProduct, exampleMatcher);
+
+		Page <Product> products = productRepository.findAll(example, pageable);
+
+		int totalPages = products.getTotalPages();
 		List <ProductResponse> productList = products.getContent().stream()
-													 .map(this::mapProductToProductResponse).toList();
+													 .map(this::mapProductToProductResponse)
+													 .toList();
+
 		return new PageableItems <>(productList, totalPages);
+	}
+// The getSortBy, buildSpecification, and getDirection methods remain the same as in the previous response.
+
+
+	private Sort getSortBy (String sortBy) {
+		Sort sort = Sort.unsorted(); // Default to unsorted
+
+		if (sortBy != null) {
+			String[] sortParts = sortBy.split(",");
+			for (String sortPart : sortParts) {
+				String[] sortFieldAndDirection = sortPart.split("_");
+				if (sortFieldAndDirection.length == 2) {
+					String field     = sortFieldAndDirection[0];
+					String direction = sortFieldAndDirection[1];
+
+					if ("quantity".equals(field)) {
+						sort = sort.and(Sort.by(Sort.Order.by(field).with(getDirection(direction))));
+					} else if ("cost".equals(field)) {
+						sort = sort.and(Sort.by(Sort.Order.by(field).with(getDirection(direction))));
+					}
+				}
+			}
+		}
+		return sort;
+	}
+
+
+	private Sort.Direction getDirection (String direction) {
+		if ("asc".equalsIgnoreCase(direction)) {
+			return Sort.Direction.ASC;
+		} else if ("dsc".equalsIgnoreCase(direction) || "desc".equalsIgnoreCase(direction)) {
+			return Sort.Direction.DESC;
+		}
+		return Sort.Direction.ASC; // Default to ascending
 	}
 
 
@@ -120,7 +171,7 @@ public class ProductService {
 		productResponse.setCurrentCost(product.getCurrentCost());
 		productResponse.setCreationDate(product.getCreationDate());
 		productResponse.setSize(product.getSize());
-		productResponse.setDesignName(product.getDesign().getDesignName());
+		productResponse.setDesignName(product.getDesignName());
 		productResponse.setColor(product.getColor());
 		return productResponse;
 	}

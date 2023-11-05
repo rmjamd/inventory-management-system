@@ -7,8 +7,6 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-import java.util.List;
-
 @Entity
 @Setter
 @Getter
@@ -26,10 +24,6 @@ public class Design {
 	@ManyToOne(optional = false,fetch = FetchType.LAZY)
 	@JoinColumn(name = "sub_category_id")
 	private SubCategory subCategory;
-
-	@OneToMany(mappedBy = "design",
-			   cascade = CascadeType.ALL)
-	private List <Product> products;
 	@Lob
 	@Column(columnDefinition = "MEDIUMBLOB")
 	@Size(max = 512400, message = "Image size should not exceed 100KB")

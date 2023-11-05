@@ -2,6 +2,7 @@ package com.ramij.inventory.controller;
 
 import com.ramij.inventory.dto.request.ProductRequest;
 import com.ramij.inventory.dto.response.ProductResponse;
+import com.ramij.inventory.model.Color;
 import com.ramij.inventory.model.PageableItems;
 import com.ramij.inventory.service.ProductService;
 import jakarta.validation.Valid;
@@ -43,25 +44,33 @@ public class ProductController {
 	@GetMapping("/product-lists")
 	public ResponseEntity <PageableItems <ProductResponse>> getAllProducts (
 			@RequestParam(name = "page",
-						  defaultValue = "0")
+						  defaultValue = "0",
+						  required = false)
 			int pageNo,
 			@RequestParam(name = "size",
-						  defaultValue = "5")
+						  defaultValue = "5",
+						  required = false)
 			int size,
 			@RequestParam(name = "designName",
-						  defaultValue = "")
+						  required = false)
 			String designName,
 			@RequestParam(name = "color",
-						  defaultValue = "")
-			String color,
+						  required = false)
+			Color color,
 			@RequestParam(name = "sortBy",
-						  defaultValue = "")
+						  defaultValue = "",
+						  required = false)
 			String sortBy
 	) {
 		log.info("Getting all products");
-		PageableItems <ProductResponse> productResponses = productService.getAllProducts(pageNo, size);
+		PageableItems <ProductResponse> productResponses = productService.getAllProducts(pageNo, size, designName, color, sortBy);
 		return ResponseEntity.ok(productResponses);
 	}
-
+@GetMapping("/product-list")
+public ResponseEntity <Object> getAllProducts1 (
+) {
+	log.info("Getting all products");
+	return ResponseEntity.ok("");
+}
 	// Add other CRUD operations and mappings here
 }

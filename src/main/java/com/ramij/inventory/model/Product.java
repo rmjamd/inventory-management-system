@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @Setter
 @Getter
 @Accessors(chain = true)
-@ToString(exclude = {"design"})
+@ToString(exclude = {"designName"})
 public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,10 +28,8 @@ public class Product {
 	private BigDecimal currentCost;
 	@Column(name = "doc")
 	private LocalDate  creationDate = LocalDate.now();
-	@ManyToOne
-	@JoinColumn(name = "design_id")
 	@NotNull
-	Design design;
+	private String designName;
 	private Size size;
 	private Color color;
 
