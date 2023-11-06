@@ -22,13 +22,14 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long productId;
 	@Positive
-	int  quantity;
+	Integer  quantity;
 	@Column(name = "cost")
 	@NotNull(message = "Current cost cannot be null")
 	private BigDecimal currentCost;
 	@Column(name = "doc")
 	private LocalDate  creationDate = LocalDate.now();
 	@NotNull
+	@Column(name = "design_name")
 	private String designName;
 	private Size size;
 	private Color color;

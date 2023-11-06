@@ -141,7 +141,7 @@ public class ProductService {
 	private Sort.Direction getDirection (String direction) {
 		if ("asc".equalsIgnoreCase(direction)) {
 			return Sort.Direction.ASC;
-		} else if ("dsc".equalsIgnoreCase(direction) || "desc".equalsIgnoreCase(direction)) {
+		} else if ("desc".equalsIgnoreCase(direction)) {
 			return Sort.Direction.DESC;
 		}
 		return Sort.Direction.ASC; // Default to ascending
