@@ -4,6 +4,7 @@ import com.ramij.inventory.dto.request.ProductRequest;
 import com.ramij.inventory.dto.response.ProductResponse;
 import com.ramij.inventory.model.Color;
 import com.ramij.inventory.model.PageableItems;
+import com.ramij.inventory.model.Product;
 import com.ramij.inventory.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
@@ -50,20 +51,24 @@ public class ProductController {
 			@RequestParam(name = "size",
 						  defaultValue = "5",
 						  required = false)
-			int size,
+			int  size,
 			@RequestParam(name = "designName",
 						  required = false)
 			String designName,
 			@RequestParam(name = "color",
 						  required = false)
 			Color color,
+			@RequestParam(name = "productSize",
+						  required = false)
+			Product.Size.SizeName productSize,
+
 			@RequestParam(name = "sortBy",
 						  defaultValue = "",
 						  required = false)
 			String sortBy
 	) {
 		log.info("Getting all products");
-		PageableItems <ProductResponse> productResponses = productService.getAllProducts(pageNo, size, designName, color, sortBy);
+		PageableItems <ProductResponse> productResponses = productService.getAllProducts(pageNo, size, designName, color, productSize, sortBy);
 		return ResponseEntity.ok(productResponses);
 	}
 @GetMapping("/product-list")

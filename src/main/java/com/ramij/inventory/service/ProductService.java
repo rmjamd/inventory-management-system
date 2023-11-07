@@ -87,7 +87,7 @@ public class ProductService {
 
 
 	@Transactional(readOnly = true)
-	public PageableItems <ProductResponse> getAllProducts (int pageNo, int size, String designName, Color color, String sortBy) {
+	public PageableItems <ProductResponse> getAllProducts (int pageNo, int size, String designName, Color color, Product.Size.SizeName productSize, String sortBy) {
 		log.info("Getting all products with page: {}, size: {}, designName: {}, color: {}, sortBy: {}", pageNo, size, designName, color, sortBy);
 
 		Sort     sort     = getSortBy(sortBy);
@@ -97,6 +97,7 @@ public class ProductService {
 		exampleProduct.setDesignName(designName);
 		exampleProduct.setCreationDate(null);
 		exampleProduct.setColor(color);
+		exampleProduct.setSize(new Product.Size().setSizeName(productSize));
 
 		ExampleMatcher exampleMatcher = ExampleMatcher.matching()
 													  .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING); // Adjust this as needed
