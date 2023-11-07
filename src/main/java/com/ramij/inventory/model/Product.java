@@ -25,7 +25,7 @@ public class Product {
 	Integer  quantity;
 	@Column(name = "cost")
 	@NotNull(message = "Current cost cannot be null")
-	private BigDecimal currentCost;
+	private BigDecimal cost;
 	@Column(name = "doc")
 	private LocalDate  creationDate = LocalDate.now();
 	@NotNull

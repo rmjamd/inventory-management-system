@@ -12,9 +12,9 @@ import java.time.LocalDate;
 @Accessors(chain = true)
 public class ProductResponse {
 	private Long         productId;
-	private int          quantity;
-	private BigDecimal   currentCost;
-	private LocalDate    creationDate;
+	private int        quantity;
+	private BigDecimal cost;
+	private LocalDate  creationDate;
 	private Product.Size size;
 	private     String designName;
 	private Color  color;

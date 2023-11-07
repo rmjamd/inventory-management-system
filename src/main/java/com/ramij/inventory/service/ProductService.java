@@ -48,7 +48,7 @@ public class ProductService {
 			if (optionalProduct.isEmpty()) {
 				product = new Product();
 				product.setQuantity(productRequest.getQuantity());
-				product.setCurrentCost(productRequest.getCurrentCost());
+				product.setCost(productRequest.getCost());
 				product.setCreationDate(LocalDate.now());
 				product.setSize(productRequest.getSize());
 				product.setColor(productRequest.getColor());
@@ -57,7 +57,7 @@ public class ProductService {
 				log.info("Created a new product with ID: {}", updatedOrSavedProduct.getProductId());
 			} else {
 				product = optionalProduct.get();
-				product.setCurrentCost(productRequest.getCurrentCost());
+				product.setCost(productRequest.getCost());
 				product.setQuantity(product.getQuantity() + productRequest.getQuantity());
 				product.setCreationDate(LocalDate.now());
 				updatedOrSavedProduct = productRepository.save(product);
@@ -131,6 +131,9 @@ public class ProductService {
 					} else if ("cost".equals(field)) {
 						sort = sort.and(Sort.by(Sort.Order.by(field).with(getDirection(direction))));
 					}
+					else{
+						throw new IllegalArgumentException("Invalid sort field: " + field);
+					}
 				}
 			}
 		}
@@ -144,7 +147,9 @@ public class ProductService {
 		} else if ("desc".equalsIgnoreCase(direction)) {
 			return Sort.Direction.DESC;
 		}
-		return Sort.Direction.ASC; // Default to ascending
+		else{
+			throw new IllegalArgumentException("Invalid sort direction: " + direction);
+		}
 	}
 
 
@@ -168,7 +173,7 @@ public class ProductService {
 		ProductResponse productResponse = new ProductResponse();
 		productResponse.setProductId(product.getProductId());
 		productResponse.setQuantity(product.getQuantity());
-		productResponse.setCurrentCost(product.getCurrentCost());
+		productResponse.setCost(product.getCost());
 		productResponse.setCreationDate(product.getCreationDate());
 		productResponse.setSize(product.getSize());
 		productResponse.setDesignName(product.getDesignName());

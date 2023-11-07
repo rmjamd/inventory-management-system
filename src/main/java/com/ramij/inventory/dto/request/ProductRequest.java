@@ -13,9 +13,9 @@ import java.math.BigDecimal;
 public class ProductRequest {
 	private int        quantity;
 	@NotNull
-	private BigDecimal currentCost;
+	private BigDecimal cost;
 	@NotNull
-	private String       designName;
+	private String     designName;
 	@NotNull
 	private Product.Size size;
 	@NotNull
