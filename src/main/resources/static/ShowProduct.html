@@ -64,9 +64,13 @@
             color: #fff;
         }
 
-        #productList {
+        .pagination {
+            display: none;
             margin-top: 20px;
-            padding: 20px;
+        }
+
+        .pagination button {
+            margin: 0 5px;
         }
     </style>
 </head>
@@ -118,9 +122,18 @@
         <button onclick="searchProducts()">Search</button>
     </div>
 </div>
+
 <div id="productList"></div>
 
+<div class="pagination" id="pagination">
+    <button id="prevButton" onclick="navigatePage(-1)" disabled>Previous</button>
+    <span id="currentPage">Page 0</span>
+    <button id="nextButton" onclick="navigatePage(1)">Next</button>
+</div>
+
 <script>
+    let currentPage = 0;
+
     function searchProducts() {
         const designName = document.getElementById("designName").value;
         const color = document.getElementById("color").value;
@@ -137,7 +150,7 @@
         if (sortByQuantity) apiUrl += `sortBy=quantity_${sortByQuantity}&`;
 
         // Add page and size parameters
-        apiUrl += `page=0&size=5`;
+        apiUrl += `page=${currentPage}&size=5`;
 
         // Fetch data from the API
         fetch(apiUrl)
@@ -146,14 +159,44 @@
             .catch(error => console.error(error));
     }
 
+    function navigatePage(delta) {
+        currentPage += delta;
+        searchProducts();
+    }
+
+    function updatePaginationButtons() {
+        const prevButton = document.getElementById("prevButton");
+        const nextButton = document.getElementById("nextButton");
+        const currentPageSpan = document.getElementById("currentPage");
+
+        if (currentPage <= 0) {
+            prevButton.disabled = true;
+        } else {
+            prevButton.disabled = false;
+        }
+
+        if (currentPage >= 1) {
+            nextButton.disabled = true;
+        } else {
+            nextButton.disabled = false;
+        }
+
+        currentPageSpan.textContent = `Page ${currentPage}`;
+    }
+
     function displayProductList(products) {
         const productListDiv = document.getElementById("productList");
+        const paginationDiv = document.getElementById("pagination");
+
         productListDiv.innerHTML = "";
 
         if (products.length === 0) {
             productListDiv.textContent = "No products found.";
+            paginationDiv.style.display = "none";
             return;
         }
+
+        paginationDiv.style.display = "block";
 
         const table = document.createElement("table");
         table.innerHTML = `
@@ -174,6 +217,7 @@
         });
 
         productListDiv.appendChild(table);
+        updatePaginationButtons();
     }
 </script>
 </body>
