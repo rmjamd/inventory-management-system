@@ -51,7 +51,7 @@ public class ProductController {
 			@RequestParam(name = "size",
 						  defaultValue = "5",
 						  required = false)
-			int  size,
+			int size,
 			@RequestParam(name = "designName",
 						  required = false)
 			String designName,
@@ -71,11 +71,5 @@ public class ProductController {
 		PageableItems <ProductResponse> productResponses = productService.getAllProducts(pageNo, size, designName, color, productSize, sortBy);
 		return ResponseEntity.ok(productResponses);
 	}
-@GetMapping("/product-list")
-public ResponseEntity <Object> getAllProducts1 (
-) {
-	log.info("Getting all products");
-	return ResponseEntity.ok("");
-}
 	// Add other CRUD operations and mappings here
 }

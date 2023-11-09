@@ -12,12 +12,12 @@ import java.math.BigDecimal;
 @Accessors(chain = true)
 public class ProductRequest {
 	private int        quantity;
-	@NotNull
+	@NotNull(message = "Current cost cannot be null")
 	private BigDecimal cost;
-	@NotNull
+	@NotNull(message = "Design name cannot be null")
 	private String     designName;
-	@NotNull
+	@NotNull(message = "Size name cannot be null")
 	private Product.Size size;
-	@NotNull
+	@NotNull(message = "Color cannot be null")
 	Color color;
 }

@@ -22,7 +22,7 @@ async function addProduct() {
 
     const productData = {
         quantity: quantity,
-        currentCost: currentCost,
+        cost: currentCost,
         designName: designName,
         size: {
             sizeName: sizeName,
@@ -39,9 +39,8 @@ async function addProduct() {
             body: JSON.stringify(productData),
         });
 
-        if (response.status >= 200) {
+        if (response.status >= 200 && response.status<300) {
             alert("Product created successfully!");
-            document.getElementById("designName").value = "";
             document.getElementById("quantity").value = "";
             document.getElementById("currentCost").value = "";
             document.getElementById("sizeName").value = "";
