@@ -13,8 +13,9 @@
         <h1>Add Design</h1>
         <form id="design-form" enctype="multipart/form-data">
             <label for="subCategoryName">Sub Category Name:</label>
-            <input type="text" id="subCategoryName" name="subCategoryName" required oninput="suggestSubCategories()">
-            <div id="suggestions" class="suggestions"></div>
+            <input type="text" id="subCategoryName" name="subCategoryName" oninput="filterOptions()" onclick="showAllOptions()">
+<!--            <div id="suggestions" class="suggestions"></div>-->
+            <div id="options-list"></div>
             <label for="designName">Design Name:</label>
             <input type="text" id="designName" name="designName" required>
             <label for="description">Description:</label>
