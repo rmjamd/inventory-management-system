@@ -20,13 +20,13 @@ import java.util.Optional;
 @Service
 @Log4j2
 public class DesignService {
-	private final DesignRepository   designService;
+	private final DesignRepository   designRepository;
 	private final SubCategoryService subCategoryService;
 
 
 	@Autowired
-	public DesignService (DesignRepository designService, SubCategoryService subCategoryService) {
-		this.designService      = designService;
+	public DesignService (DesignRepository designRepository, SubCategoryService subCategoryService) {
+		this.designRepository   = designRepository;
 		this.subCategoryService = subCategoryService;
 	}
 
@@ -40,7 +40,7 @@ public class DesignService {
 			design.setCreatorName(request.getCreatorName());
 			design.setSubCategory(subCategoryService.getSubCategoryByName(subCategoryName));
 			design.setImage(image.getBytes());
-			design = designService.save(design);
+			design = designRepository.save(design);
 
 			DesignResponse response = mapDesignToResponse(design);
 			log.info("Created new design with ID: " + design.getDesignId());
@@ -54,7 +54,7 @@ public class DesignService {
 
 	public PageableItems <DesignResponse> getAllDesigns (int pageNo, int size) {
 		try {
-			Page <Design> pages   = designService.findAll(PageRequest.of(pageNo, size));
+			Page <Design> pages   = designRepository.findAll(PageRequest.of(pageNo, size));
 			List <Design> designs = pages.getContent();
 			return new PageableItems <>(mapDesignsToResponses(designs), pages.getTotalPages());
 		} catch (Exception e) {
@@ -66,7 +66,7 @@ public class DesignService {
 
 	public Optional <DesignResponse> getDesignById (Long id) {
 		try {
-			Optional <Design> designOptional = designService.findById(id);
+			Optional <Design> designOptional = designRepository.findById(id);
 			return designOptional.map(this::mapDesignToResponse);
 		} catch (Exception e) {
 			log.error("Error in fetching a design by id", e);
@@ -77,7 +77,7 @@ public class DesignService {
 
 	public DesignResponse updateDesign (Long id, DesignRequest request) {
 		try {
-			Optional <Design> designOptional = designService.findById(id);
+			Optional <Design> designOptional = designRepository.findById(id);
 			if (designOptional.isEmpty()) {
 				throw new EntityNotFoundException("Design not found with ID: " + id);
 			}
@@ -86,7 +86,7 @@ public class DesignService {
 			design.setDesignName(request.getDesignName());
 			design.setDescription(request.getDescription());
 			design.setCreatorName(request.getCreatorName());
-			design = designService.save(design);
+			design = designRepository.save(design);
 
 			log.info("Updated design with ID: " + design.getDesignId());
 
@@ -100,7 +100,7 @@ public class DesignService {
 
 	public void deleteDesign (Long id) {
 		try {
-			designService.deleteById(id);
+			designRepository.deleteById(id);
 			log.info("Deleted design with ID: " + id);
 		} catch (Exception e) {
 			log.error("Error deleting design", e);
@@ -111,7 +111,7 @@ public class DesignService {
 
 	public DesignResponse getDesignByName (String name) {
 		try {
-			Design designName = designService.findByDesignName(name);
+			Design designName = designRepository.findByDesignName(name);
 			return mapDesignToResponse(designName);
 		} catch (Exception e) {
 			log.error("Error in fetching a design by Name", e);
@@ -135,5 +135,10 @@ public class DesignService {
 		response.setCreatorName(design.getCreatorName());
 		response.setImage(design.getImage());
 		return response;
+	}
+
+
+	public List<String> getAllDesignNames () {
+		return designRepository.findAllDesignNames();
 	}
 }

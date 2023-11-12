@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 @Setter
 @Getter
 @Accessors(chain = true)
-@ToString(exclude = {"subCategory", "products"})
+@ToString(exclude = {"subCategory","image"})
 public class Design {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

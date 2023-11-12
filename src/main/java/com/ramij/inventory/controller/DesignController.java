@@ -13,6 +13,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -97,11 +98,17 @@ public class DesignController {
 
 
 	@GetMapping("/design")
-	public ResponseEntity <DesignResponse> getDesignByName (
-			@PathVariable
-			String name) {
+	public ResponseEntity<DesignResponse> getDesignByName(
+			@RequestParam(name = "name") String name) {
 		log.info("Fetching design by Name: {}", name);
 		DesignResponse design = designService.getDesignByName(name);
 		return ResponseEntity.ok(design);
 	}
+	@GetMapping("/design/names")
+	public ResponseEntity<List <String>> getAllDesignNames(){
+		List <String> list = designService.getAllDesignNames();
+		return new ResponseEntity <>(list, HttpStatus.OK);
+	}
+
+
 }
