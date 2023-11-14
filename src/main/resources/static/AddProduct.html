@@ -30,20 +30,6 @@
     </form>
     <div id="product-list"></div>
 </div>
-<script>
-    // Function to get the value of a URL parameter
-    function getURLParameter(name) {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(name);
-    }
-
-    // Extract the designName parameter from the URL and set it as the value of the input field
-    const designName = getURLParameter('designName');
-    const designNameInput = document.getElementById('designName');
-    if (designNameInput && designName) {
-        designNameInput.value = designName;
-    }
-</script>
 <script src="js/AddProduct.js"></script>
 </body>
 </html>
